@@ -1,7 +1,7 @@
 import React from 'react';
 import doctor from '../../Assets/images/doctor.png';
 import appointment from '../../Assets/images/appointment.png';
-import PrimaryBtn from './src/Components/Shared/PrimaryBtn';
+import PrimaryBtn from '../Shared/PrimaryBtn';
 
 const MakeAppointment = () => {
     return (
