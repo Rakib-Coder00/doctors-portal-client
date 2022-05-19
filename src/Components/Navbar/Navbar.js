@@ -1,15 +1,28 @@
+import { signOut } from 'firebase/auth';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+import auth from '../../Firebase/Firebase.init';
 
 const Navbar = () => {
+    const [user] = useAuthState(auth);
+    const logout = () => {
+        signOut(auth);
+        localStorage.removeItem('accessToken');
+        toast.success('Successfully Logout!', {id: 'logout'})
+      }
     const menuItems = <>
-         <li><NavLink to='home'>Home</NavLink></li>
-        <li><NavLink to='/appointment'>Appointment</NavLink></li>
-        <li><NavLink to='/review'>Review</NavLink></li>
-        <li><NavLink to='/contact'>Contact</NavLink></li>
-        <li><NavLink to='/about'>About</NavLink></li>
+        <li><Link to='/'>Home</Link></li>
+        <li><Link to='/appointment'>Appointment</Link></li>
+        <li><Link to='/review'>Review</Link></li>
+        <li><Link to='/contact'>Contact</Link></li>
+        <li><Link to='/about'>About</Link></li>
+        {
+            user && <li><Link to='/dashboard'>Dashboard</Link></li>
+        } 
+        <li>{user?.uid ?(<button className='btn btn-ghost' onClick={logout}>Logout</button>):(<Link to='/login'>Login</Link>)}</li>
     </>
-
     return (
         <div className="navbar bg-white px-20">
             <div className="navbar-start">
@@ -21,7 +34,7 @@ const Navbar = () => {
                         {menuItems}
                     </ul>
                 </div>
-                <NavLink to='/'> <h1 className="btn btn-ghost normal-case text-xl">Doctor Portal</h1></NavLink>
+                <Link to='/'> <h1 className="btn btn-ghost normal-case text-xl">Doctor Portal</h1></Link>
             </div>
             <div className="navbar-end hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
